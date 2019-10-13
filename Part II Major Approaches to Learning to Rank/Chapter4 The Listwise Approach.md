@@ -331,79 +331,39 @@ $$
 ## 参考文献
 
 1. Almeida, H., Goncalves, M., Cristo, M., Calado, P.: A combined component approach for finding collection-adapted ranking functions based on genetic programming. In: Proceedings of the 30th Annual International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR 2007), pp. 399–406 (2007)
-
 2. Andrews, S., Tsochantaridis, I., Hofmann, T.: Support vector machines for multiple-instance learning. In: Advances in Neural Information Processing Systems 15 (NIPS 2002), pp. 561– 568 (2003)
-
 3. Burges, C.J., Shaked, T., Renshaw, E., Lazier, A., Deeds, M., Hamilton, N., Hullender, G.: Learning to rank using gradient descent. In: Proceedings of the 22nd International Conference on Machine Learning (ICML 2005), pp. 89–96 (2005)
-
 4. Cao, Z., Qin, T., Liu, T.Y., Tsai, M.F., Li, H.: Learning to rank: from pairwise approach to listwise approach. In: Proceedings of the 24th International Conference on Machine Learning (ICML 2007), pp. 129–136 (2007)
-
 5. Chakrabarti, S., Khanna, R., Sawant, U., Bhattacharyya, C.: Structured learning for non- smooth ranking losses. In: Proceedings of the 14th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (KDD 2008), pp. 88–96 (2008)
-
 6. Chapelle, O., Le, Q., Smola, A.: Large margin optimization of ranking measures. In: NIPS 2007 Workshop on Machine Learning for Web Search (2007)
-
 7. Chapelle, O., Wu, M.: Gradient descent optimization of smoothed information retrieval metrics. Information Retrieval Journal. Special Issue on Learning to Rank 13(3), doi:10.1007/ s10791-009-9110-3 (2010)
-
 8. Fan, W., Fox, E. A., Pathak, P., Wu, H.: The effects of fitness functions on genetic programming based ranking discovery for web search. Journal of American Society for Information Science and Technology **55**(7), 628–636 (2004)
-
 9. Fan,W.,Gordon,M.,Pathak,P.:Discoveryofcontext-specificrankingfunctionsforeffective information retrieval using genetic programming. IEEE Transactions on Knowledge and Data Engineering **16**(4), 523–527 (2004)
-
 10. Fan, W., Gordon, M., Pathak, P.: A generic ranking function discovery framework by genetic programming for information retrieval. Information Processing and Management **40**(4), 587– 602 (2004)
-
 11. Fan, W., Gordon, M., Pathak, P.: Genetic programming-based discovery of ranking functions for effective web search. Journal of Management of Information Systems **21**(4), 37–56 (2005)
-
 12. Fan, W., Gordon, M., Pathak, P.: On linear mixture of expert approaches to information retrieval. Decision Support System **42**(2), 975–987 (2006)
-
 13. Fan, W., Gordon, M.D., Xi, W., Fox, E.A.: Ranking function optimization for effective web search by genetic programming: an empirical study. In: Proceedings of the 37th Hawaii International Conference on System Sciences (HICSS 2004), p. 40105 (2004)
-
 14. Guiver, J., Snelson, E.: Learning to rank with soft rank and Gaussian processes. In: Proceedings of the 31st Annual International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR 2008), pp. 259–266 (2008)
-
 15. Guiver, J., Snelson, E.: Bayesian inference for Plackett–Luce ranking models. In: Proceedings of the 26th International Conference on Machine Learning (ICML 2009), pp. 377–384 (2009)
-
 16. Huang, J., Frey, B.: Structured ranking learning using cumulative distribution networks. In: Advances in Neural Information Processing Systems 21 (NIPS 2009) (2008)
-
 17. Joachims, T.: A support vector method for multivariate performance measures. In:  Proceedings of the 22nd International Conference on Machine Learning (ICML 2005), pp. 377–384 (2005)
-
 18. Kass, R. E., Steffey, D.: Approximate Bayesian inferencein conditionally independent hierarchical models. Journal of the American Statistical Association **84**(407), 717–726 (1989)
-
 19. Le, Q., Smola, A.: Direct optimization of ranking measures. Tech. rep., arXiv:0704.3359 (2007)
-
 20. Luce, R. D.: Individual Choice Behavior. Wiley, NewYork(1959)
-
 21. Mallows, C. L.: Non-null ranking models. Biometrika **44**, 114–130(1975)
-
 22. McCullagh, P., Nelder, J.A.: Generalized Linear Models, 2nd edn. CRC Press, Boca Raton (1990)
-
 23. Metzler, D.A., Croft, W.B., McCallum, A.: Direct maximization of rank-based metrics for information retrieval. Tech. rep., CIIR (2005)
-
 24. Plackett, R. L.: The analysis of permutations. Applied Statistics **24**(2), 193–202(1975) 
-
 25. Qin, T., Liu, T. Y., Li, H.: A general approximation framework for direct optimization of information retrieval measures. Information Retrieval **13**(4), 375–397 (2009)
-
 26. Robertson, S., Zaragoza, H.: On rank-based effectiveness measures and optimization. Information Retrieval **10**(3), 321–339 (2007)
-
 27. Talyor, M., Guiver, J., et al.: Softrank: optimising non-smooth rank metrics. In: Proceedings of the 1st International Conference on Web Search and Web Data Mining (WSDM 2008), pp. 77–86 (2008)
-
 28. Trotman, A.: Learning to rank. Information Retrieval**8**(3), 359–381(2005)
-
 29. Tsochantaridis, I., Hofmann,T., Joachims, T., Altun, Y.: Support vector machine learning for interdependent and structured output space. In: Proceedings of the 21st International Conference on Machine Learning (ICML 2004), pp. 104–111 (2004)
-
 30. Volkovs, M. N., Zemel, R. S. : Boltzrank: learning to maximize expected ranking gain. In: Proceedings of the 26th International Conference on Machine Learning (ICML 2009), pp. 1089–1096 (2009)
-
 31. Xia, F., Liu, T. Y., Wang, J., Zhang, W., Li, H. : Listwise approach to learning to rank—theorem and algorithm. In: Proceedings of the 25th International Conference on Machine Learning (ICML 2008), pp. 1192–1199 (2008)
-
 32. Xu, J., Li, H. : Adarank: a boosting  algorithmfor information retrieval. In: Proceedings of the 30th Annual International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR 2007), pp. 391–398 (2007)
-
 33. Xu, J., Liu, T.Y., Lu, M., Li, H., Ma, W.Y.: Directly optimizing IR evaluation measures in learning to rank. In: Proceedings of the 31st Annual International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR 2008), pp. 107–114 (2008)
-
 34. Yeh, J.Y., Lin, J.Y., et al.: Learning to rank for information retrieval using genetic program- ming. In: SIGIR 2007 Workshop on Learning to Rank for Information Retrieval (LR4IR 2007)(2007)
-
 35. Yilmaz, E., Robertson, S.: On the choice of effectiveness measures for learning to rank. In-formation Retrieval Journal. Special Issue on Learning to Rank 13(3), doi:10.1007/s10791-009-9116-x (2010)
-
-36. Yue, Y., Finley, T., Radlinski, F., Joachims, T.: A support vector method for optimizing aver-
-
-    age precision. In: Proceedings of the 30th Annual International ACM SIGIR Conference on
-
-    Research and Development in Information Retrieval (SIGIR 2007), pp. 271–278 (2007)
-
+36. Yue, Y., Finley, T., Radlinski, F., Joachims, T.: A support vector method for optimizing average precision. In: Proceedings of the 30th Annual International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR 2007), pp. 271–278 (2007)
 37. Zoeter, O., Taylor, M., Snelson, E., Guiver, J., Craswell, N., Szummer, M.: A decision theo- retic framework for ranking using implicit feedback. In: SIGIR 2008 Workshop on Learning to Rank for Information Retrieval (LR4IR 2008) (2008)
