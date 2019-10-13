@@ -156,13 +156,15 @@ $$
 ![图2.5 累计边界策略](../picture/pic_2_4.png)
 图2.5 累计边界策略
 $$
-min\frac{1}{2}||\omega||^2+\lambda\sum^n_{i=1}{\sum^{m^{(i)}}_{j=1}{
+\begin{align*}
+&min\frac{1}{2}||\omega||^2+\lambda\sum^n_{i=1}{\sum^{m^{(i)}}_{j=1}{
 \sum^{K-1}_{k=1}(\xi_{j,k}^{(i)}+\xi_{j,k+1}^{(i)*})}}\\
-s.t. a_k \leq b_k \leq a_k+1, \\
-w^Tx_j^{(i)} \leq a_k+\xi_{j,k}^{(i)}, if\ y_j^{(i)}=k, \\
-w^Tx_j^{(i)} \geq b_k-\xi_{j,k+1}^{(i)*}, if\ y_j^{(i)}=k+1, \\
-||\omega||^2 \leq 1, \ \xi_{j,k}^{(i)*} \geq0, \ \xi_{j,k+1}^{(i)*}\geq0, \\
-j=1,...,m^{(i)},\ i=1,...,n,\ ,k=1,...,K-1.
+s.t.\ & a_k \leq b_k \leq a_k+1, \\
+&w^Tx_j^{(i)} \leq a_k+\xi_{j,k}^{(i)}, if\ y_j^{(i)}=k, \\
+&w^Tx_j^{(i)} \geq b_k-\xi_{j,k+1}^{(i)*}, if\ y_j^{(i)}=k+1, \\
+&||\omega||^2 \leq 1, \ \xi_{j,k}^{(i)*} \geq0, \ \xi_{j,k+1}^{(i)*}\geq0, \\
+&*j=1,...,m^{(i)},\ i=1,...,n,\ ,k=1,...,K-1.
+\end{align*}
 \tag{2.13}
 $$
 理想地，在上述方法中，一个要求$b_k(k=1,...,K-1)$在一个递增的序列中($b_{k-1}\leq b_k$)，但是，实际上，由于在优化问题中对阈值没有明确的限制，因此学习过程不能始终保证这一点。 为了解决这个问题，Chu and Keerthi [3]在阈值上添加显式或隐式约束。 显式约束简单地采取$b_{k-1}\leq b_k$的形式，而隐式约束使用冗余训练示例来保证阈值之间的顺序关系。
@@ -175,7 +177,127 @@ $$
 $$
 L(f;x_j,y_j)=\phi(f(x_j)-b_{y_j-1})+\phi(b_{y_j}-f(x_j)) \tag{2.14}
 $$
-其对每个样本，$(x_j,y_j)$，只有两个阈值（被定义为“正确的细分”）$(b_{y_j-1},b_{y_j})$是被关心的。
+其中对每个样本$(x_j,y_j)$，只有两个阈值（被定义为“正确的细分”）$(b_{y_j-1},b_{y_j})$是被关心的。换言之，即时阈值损失不知道是否超过了多个阈值。
 
 对于全阈值的损失被定义如下，这是所有违反阈值的惩罚之和。
+$$
+L(f;x_j,y_j)=\sum_{k=1}^K\phi(s(k,y_j))(b_k-f(x_j)) \tag{2.15}
+$$
+其中，
+$$
+\begin{equation}
+s(k,y_j)=\left\{
+\begin{aligned}
+-1 &, k<y_j \\
+1 &, k\geq y_j
+\end{aligned}
+\right.
+\end{equation}
+\tag{2.16}
+$$
+注意，每次超过阈值时，上述损失函数的斜率都会增加。 此时解会被鼓励以最小化越过阈值的数量。
+
+在MovieLens数据集上测试了上述两个损失函数。实验结果表明，与多类分类和简单的回归方法相比，全阈值损失函数可以带来更好的排序性能，并且可以使即时阈值损失函数最小化。
+
+## 2.5 讨论
+
+在本节中，我们首先讨论逐点方法与信息检索中的某些早期学习方法之间的关系，例如相关性反馈。 然后，我们讨论了逐点方法的局限性。
+
+### 2.5.1 与相关性反馈的关系
+
+分级学习的逐点方法，尤其是基于分类的算法，与相关性反馈算法有很强的相关性[7，19]。 相关性反馈算法在信息检索的文献中起着重要的作用，它还利用监督学习技术来提高检索的准确性。 基本思想是从显式，隐式或盲目反馈中学习以更新原始查询。 然后，新查询将用于检索新的文档集。 通过迭代的方式，我们可以使原始查询更接近于最佳查询，从而提高检索性能。
+
+在这里，我们以著名的Rocchio算法[19]为例，讨论相关性反馈与学习排名之间的关系。 Rocchio算法更新查询的具体方式如下。 首先，查询$q$及其相关文档均在向量空间中表示，然后通过相关性反馈，$\{x_j\}_{j=1}^{m^+}$被定义为相关文档（例如$y_j=1$），$\{x_j\}_{j=m^++1}^{m^++m^-}$定义为不相关文档（例如$y_j=0$），接着查询向量根据以下启发式更新：
+$$
+\tilde{q}=\alpha q+\beta\frac{1}{m^+}\sum_{j=1}^{m^+}{x_j}-\gamma\frac{1}{m^-}\sum_{j=1+m^+}^{m^++m^-}{x_j} \tag{2.17}
+$$
+如果我们使用VSM模型进行检索，则文档将根据其内部乘积与新的查询向量$\tilde{q}$进行排名。 在数学上，我们可以将相应的评分函数定义为：
+$$
+f(x_j)=\tilde{q}^Tx_j \tag{2.18}
+$$
+从这个意义上讲，我们可以将新的查询向量视为模型参数。 为了便于讨论，我们使用$\omega$表示该向量，即$\omega = q$。 然后，如[14]所示，上述查询更新过程后面实际上有一个隐藏的损失函数，它是$\omega$和$x$的函数。 
+$$
+\begin{equation}
+L(f;x_j,y_j)=\left\{
+\begin{aligned}
+\frac{1}{m^+}(\frac{1-\alpha}{4}||\omega||^2-\beta\omega^Tx_j),\ y_j=1, \\
+\frac{1}{m^-}(\frac{1-\alpha}{4}||\omega||^2+\gamma\omega^Tx_j),\ y_j=0
+\end{aligned}
+\right.
+\end{equation}
+\tag{2.19}
+$$
+换句话说，Rocchio算法还最小化了某些逐点损失函数。 从这个意义上讲，它看起来与学习排序的逐点方法非常相似。 但是，我们想指出它与所谓的学习排名的显着差异，如下所示。
+
+- Rocchio算法中的特征空间是VSM中使用的标准向量空间。在此空间中，查询和文档均表示为向量，它们的内部乘积定义了相关性。相反，在学习排名时，特征空间包含从每个查询文档对中提取的要素。只有文档具有特征表示，并且查询不是同一特征空间中的向量。
+- Rocchio算法从给定查询的反馈中学习模型参数，然后使用该模型对与同一查询关联的文档进行排名。它不考虑模型在查询中的泛化。但是，在学习排序时，我们从训练集中学习了排名模型，并且主要使用它来对与看不见的测试查询相关的文档进行排名。
+- Rocchio算法中的模型参数$w$实际上具有其物理含义，即它是更新的查询向量。但是，在学习排序时，模型参数没有这种含义，仅对应于每个特征对排名任务的重要性。
+- Rocchio算法的目标是更新查询公式以实现更好的检索，而不是学习最佳排序函数。换句话说，在更新查询之后，使用固定排名函数（例如，VSM模型）来返回一组新的相关文档。
+
+### 2.5.2 逐点方法存在的问题
+
+由于逐点方法中的输入对象是单个文档，因此文档之间的相对顺序不能在其学习过程中自然考虑。但是，排名更多是关于预测相对顺序，而不是准确的相关度。
+
+此外，逐点方法无法很好地考虑排名评估指标的两个内在属性（即基于查询级别和位置）：
+
+1. 在这些算法中，忽略了以下事实：某些文档与同一查询相关联，而另一些文档与同一查询无关。结果，当针对不同查询的关联文档的数量变化很大时，总体损失函数将由包含大量文档的那些查询主导，对于重排序方案，每个查询要排名的文档数量可能非常相似，例如，每个查询的前1000个文档，但是，如果我们考虑所有包含查询词的文档，那么流行查询和尾查询的文档数量之间的差异可能会很大。
+2. 逐点损失函数看不到排名清单中每个文档的位置。因此，逐点损失函数可能会在不知不觉中过分强调那些不重要的文档（在最终排名列表中排名较低，因此不会影响用户体验）。
+
+### 2.5.3 改进方法
+
+为了避免上述逐点方法的问题，RankCosine [17]将查询级归一化因子引入了逐点损失函数。 具体而言，它基于查询$q$的得分函数$f$输出的得分矢量与由标注标签定义的得分矢量之间的余弦相似度来定义损失函数（简称为余弦损失）。 即
+$$
+L(f;x,y)=\frac{1}{2}-\frac{\sum_{j=1}^m\psi(y_j)\psi(f(x_j))}{2\sqrt{\sum^m_{j=1}{\psi^2(y_j)}}\sqrt{\sum^m_{j=1}{f(x_j)}}} \tag{2.20}
+$$
+其中$\psi$是y一个转换函数，可以是线性的、指数的或者是逻辑斯蒂的。
+
+定义余弦损失函数后，使用梯度下降法执行优化并学习排序打分函数。
+
+根据[17]，这样定义的余弦损耗具有以下特性。
+
+- 余弦损失可以看作是一种回归损失，因为它要求对文档相关性的预测要尽可能接近标注标签。
+- 由于查询级别的归一化因子（损失函数中的分母），相对于不同的查询，余弦损失对文档数量的变化不敏感。
+- 余弦损失的范围是0到1，因此训练集上的总损失将不会由特定的硬查询决定。
+- 余弦损失是尺度不变的。 也就是说，如果我们将得分函数输出的所有排名得分乘以相同的常数，则余弦损失将不会改变。 这完全符合我们对排名的直觉。
+
+## 2.6 小结
+
+在本章中，我们介绍了各种逐点排序方法，并讨论了它们与以前基于学习的信息检索模型的关系及其局限性。
+
+到目前为止，逐点方法只能是排名的次佳解决方案。为了解决该问题，研究人员已尝试将与同一查询相关联的文档对或整个文档集视为输入对象，于是有了成对学习和列表学习。使用成对方法，可以更好地建模文档之间的相对顺序。使用列表方式，位置信息对于等级学习过程是可见的。
+
+## 2.7 练习
+
+2.1 列举广泛使用的损失函数，并进行分类，证明它们是否为凸函数。
+2.2 执行回归时通常会引入正则项，谈谈这点对学习过程的贡献。
+2.3 请列出顺序回归和分类之间的主要区别。
+2.4 将排名降低为序数回归，分类或回归后，会缺少哪些信息？
+2.5 除了本章介绍的算法外，还调查更多用于序数回归的算法。
+2.6 PRanking算法中的固有损失函数是什么？
+
+## 参考文献
+
+1. Chu, W., Ghahramani, Z.: Gaussian processes for ordinal regression. Journal of Machine Learning Research **6**, 1019–1041 (2005)
+2. Chu, W., Ghahramani, Z.: Preference learning with Gaussian processes. In: Proceedings of the 22nd International Conference on Machine Learning (ICML 2005), pp. 137–144 (2005)
+3. Chu,W.,Keerthi,S.S.:Newapproachestosupportvectorordinalregression.In:Proceedings of the 22nd International Conference on Machine Learning (ICML 2005), pp. 145–152 (2005)
+4. Cooper, W. S., Gey, F. C., Dabney, D. P.: Probabilistic retrieval based on staged logistic regression. In: Proceedings of the 15th Annual International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR 1992), pp. 198–210 (1992)
+5. Cossock, D., Zhang, T.: Subset ranking using regression. In: Proceedings of the 19th Annual Conference on Learning Theory (COLT 2006), pp. 605–619 (2006)
+6. Crammer, K., Singer, Y.: Pranking with ranking. In: Advances in Neural Information Processing Systems 14 (NIPS 2001), pp. 641–647 (2002)
+7. Drucker, H., Shahrary, B., Gibbon, D.C.: Support vector machines: relevance feedback and information retrieval. Information Processing and Management **38**(3), 305–323 (2002)
+8. Fuhr, N.: Optimum polynomial retrieval functions based on the probability ranking principle. ACM Transactions on Information Systems **7**(3), 183–204 (1989)
+9. Gey, F.C.: Inferring probability of relevance using the method of logistic regression. In: Proceedings of the 17th Annual International ACM SIGIR Conference on Research and Devel-opment in Information Retrieval (SIGIR 1994), pp. 222–231 (1994)
+10. Harrington, E.F.: Online ranking/collaborative filtering using the perceptron algorithm. In: Proceedings of the 20th International Conference on Machine Learning (ICML 2003), pp. 250–257 (2003)
+11. Herbrich, R., Obermayer, K., Graepel, T.: Large margin rank boundaries for ordinal regression. In: Advances in Large Margin Classifiers, pp. 115–132 (2000)
+12. Herbrich, R., Graepel, T., Campbell, C.: Bayes point machines. Journal of Machine Learning Research **1**, 245–279 (2001)
+13. Joachims, T.: Optimizing search engines using clickthrough data. In: Proceedings of the 8th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (KDD 2002), pp. 133–142 (2002)
+14. Li, F., Yang, Y.: A loss function analysis for classification methods in text categorization. In: Proceedings of the 20th International Conference on Machine Learning (ICML 2003), pp. 472–479 (2003)
+15. Li, P., Burges, C., Wu, Q.: McRank: learning to rank using multiple classification and gradient boosting. In: Advances in Neural Information Processing Systems 20 (NIPS 2007), pp. 845–852 (2008)
+16. Nallapati, R.: Discriminative models for information retrieval. In: Proceedings of the 27th Annual International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR 2004), pp. 64–71 (2004)
+17. Qin,T.,Zhang,X.D.,Tsai,M.F.,Wang,D.S.,Liu,T.Y.,Li,H.:Query-levellossfunctionsfor information retrieval. Information Processing and Management **44**(2), 838–855 (2008)
+18. Rennie, J.D.M., Srebro, N.: Loss functions for preference levels: regression with discrete or- dered labels. In: IJCAI 2005 Multidisciplinary Workshop on Advances in Preference Han- dling. ACM, New York (2005)
+19. Rochhio, J.J.: Relevance feedback in information retrieval. In: The SMART Retrieval System—Experiments in Automatic Document Processing, pp. 313–323 (1971)
+20. Shashua, A., Levin, A.: Ranking with large margin principles: two approaches. In: Advances in Neural Information Processing Systems 15 (NIPS 2002), pp. 937–944 (2003)
+21. Vapnik, V. N.: The Nature of Statistical Learning Theory. Springer, Berlin(1995)
+22. Vapnik, V. N.: Statistical Learning Theory. Wiley-Interscience, NewYork(1998)
+23. Veloso, A., de Almeida, H.M., Goncalves, M.A., Wagner, M. Jr.: Learning to rank at query-time using association rules. In: Proceedings of the 31st Annual International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR 2008), pp. 267– 274 (2008)
 
